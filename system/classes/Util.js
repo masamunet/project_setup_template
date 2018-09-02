@@ -1,3 +1,6 @@
+var https = require('https');
+var url  = require('url');
+
 class Util{
 
   /**
@@ -21,5 +24,21 @@ class Util{
     }
     return r;
   }
+
+  static getLatestVersionForDockerCompose(onComplete)
+  {
+    const targetUrl = 'https://github.com/docker/compose/releases/latest';
+    const replaceUrl = 'https://github.com/docker/compose/releases/tag/';
+    var req = https.get(url.parse(targetUrl), (response) => {
+      const version = response['headers']['location'].replace(replaceUrl, '');
+      onComplete(version.toString());
+    });
+    req.on('error', (error) => {
+      console.log(error);
+      throw err;
+    });
+  }
+
 }
+
 module.exports = {Util: Util};

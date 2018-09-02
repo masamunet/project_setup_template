@@ -1,5 +1,6 @@
 const fs = require('fs');
 const exec = require('child_process').exec;
+const Util = require('./Util').Util;
 
 class Vagrant{
 
@@ -23,6 +24,18 @@ class Vagrant{
   }
 
   generateConfig(projectName)
+  {
+    this.generateConfigPre(projectName);
+  }
+
+  generateConfigPre(projectName)
+  {
+    Util.getLatestVersionForDockerCompose((version)=>{
+      this.generateConfigAfter(projectName, version);
+    });
+  }
+
+  generateConfigAfter(projectName, version)
   {
     let check = 0;
     const callback = (err) => {
@@ -51,9 +64,12 @@ class Vagrant{
       });
     };
     let configFileData;
-    fs.copyFile(
+    this.readAndReplace(
       'system/vagrant-template/config-template.ign',
       `${projectName}/vagrant_${projectName}/config.ign`,
+      [
+        [/\${COMPOSE_VERSION}/g, version]
+      ],
       callback
     );
     fs.readFile(`${projectName}/vagrant_${projectName}/config.rb.sample`, 'utf8', (err, data) => {
@@ -66,6 +82,21 @@ class Vagrant{
       data = data.replace(/#\$vm_memory/g, '$vm_memory');
       configFileData = data;
       readConfigFile();
+    });
+  }
+
+  readAndReplace(readFrom, writeTo, replaces, callback)
+  {
+    fs.readFile(readFrom, 'utf8', (err, data)=>{
+      if(err){
+        console.log(err);
+        throw err;
+        return false;
+      }
+      replaces.forEach((element)=>{
+        data = data.replace(element[0], element[1]);
+      });
+      fs.writeFile(writeTo, data, callback);
     });
   }
 
