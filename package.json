@@ -1,0 +1,16 @@
+{
+  "name": "project_setup_template",
+  "version": "1.0.0",
+  "description": "",
+  "main": "run.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/utweb/project_setup_template.git"
+  },
+  "author": "Masamune Utsunomiya",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/utweb/project_setup_template#readme"
+}

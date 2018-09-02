@@ -1,0 +1,103 @@
+# ct < cloud-config-template.yml > config-template.ign
+#
+# CTをインストールするには以下を参考にコマンドを実行
+# https://github.com/coreos/container-linux-config-transpiler
+# brew install coreos-ct
+storage:
+  files:
+    -
+      filesystem: root
+      mode: 0644
+      path: /home/core/.bashrc
+      contents:
+        inline: |
+          alias dc="docker-compose"
+          alias dcup="docker-compose up -d"
+          alias dcrun="docker-compose run"
+          alias dcexec="docker-compose exec --rm"
+          cd /home/core/docker
+    -
+      filesystem: root
+      mode: 0755
+      path: /opt/bin/dc_watch.sh
+      contents:
+        inline: |
+          #!/bin/bash
+          while [ ! -e /opt/bin/docker-compose -o ! -e /home/core/docker -o ! -e /home/core/development -o ! -e /home/core/libs/wp_themes  -o ! -e /home/core/libs/wp_plugins ]; do wait; sleep 1; done
+          systemctl start up-docker-compose.service
+
+systemd:
+  units:
+  - name: docker.service
+    enable: true
+  - name: timezone.service
+    enable: true
+  - name: install-docker-compose.service
+    enable: true
+    contents: |
+      [Unit]
+      Description=Install docker-compose
+      ConditionPathExists=!/opt/bin/docker-compose
+      After=docker.service
+      Requires=docker.service
+
+      [Service]
+      Type=oneshot
+      RemainAfterExit=yes
+      TimeoutStartSec=0
+
+      Environment=COMPOSE_VERSION="1.14.0"
+      ExecStart=/usr/bin/mkdir -p /opt/bin/
+      ExecStart=/usr/bin/curl -o /opt/bin/docker-compose -sL "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-linux-x86_64"
+      ExecStart=/usr/bin/chmod +x /opt/bin/docker-compose
+
+      [Install]
+      WantedBy=multi-user.target
+  - name: up-docker-compose.service
+    enable: true
+    contents: |
+      [Unit]
+      Description=Up docker-compose
+      After=install-docker-compose.service network.target docker.service
+      Requires=install-docker-compose.service
+      ConditionPathExists=/home/core/docker/
+
+      [Service]
+      Type=simple
+      User=core
+      Restart=always
+      WorkingDirectory=/home/core/docker
+
+      # Remove old containers, images and volumes
+      # ExecStartPre=/opt/bin/docker-compose -f /home/core/docker/docker-compose.yml down -v
+      # ExecStartPre=/opt/bin/docker-compose -f /home/core/docker/docker-compose.yml rm -v
+      # ExecStartPre=-/bin/bash -c 'docker volume rm $(docker volume ls -q)'
+      # ExecStartPre=-/bin/bash -c 'docker rmi $(docker images | grep "<none>" | awk \'{print $3}\')'
+      # ExecStartPre=-/bin/bash -c 'docker rm -v $(docker ps -aq)'
+
+      # Compose up
+      ExecStart=/opt/bin/docker-compose -f /home/core/docker/docker-compose.yml up -d
+
+      # Compose down, remove containers and volumes
+      # ExecStop=/opt/bin/docker-compose -f /home/core/docker/docker-compose.yml down -v
+      ExecStop=/opt/bin/docker-compose -f /home/core/docker/docker-compose.yml down
+
+      [Install]
+      WantedBy=multi-user.target
+  - name: dc-watch.service
+    enable: true
+    contents: |
+      [Unit]
+      Description=Watch docker mount directory
+      After=install-docker-compose.service up-docker-compose.service
+      Requires=install-docker-compose.service up-docker-compose.service
+
+      [Service]
+      Type=oneshot
+      RemainAfterExit=yes
+      TimeoutStartSec=0
+
+      ExecStart=/opt/bin/dc_watch.sh
+
+      [Install]
+      WantedBy=multi-user.target
