@@ -18,7 +18,7 @@ class Docker{
         return false;
       }
       if(++this.ret === 3){
-        console.log('Docker complete1');
+        console.log('Docker complete!');
         this.onComplate();
       }
     };

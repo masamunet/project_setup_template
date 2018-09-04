@@ -16,22 +16,39 @@ services:
       DOMAINS: 'example.com -> http://wordpress'
     env_file: .env
 
-  db:
+  mysql:
     image: mysql:5.7
     volumes:
-      - db_data:/var/lib/mysql
+      - mysql_data:/var/lib/mysql
+      # - ../storages/mysql:/var/lib/mysql
     restart: always
     env_file: .env
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    environment:
+      PMA_ARBITRARY: 1
+      PMA_HOST: mysql
+    env_file: .env
+    depends_on:
+      - mysql
+    links:
+      - mysql
+    ports:
+       - '8080:80'
+    volumes:
+       - /sessions
 
   wordpress:
     ports:
       - '8000:80'
     depends_on:
-      - db
+      - mysql
     build: ./my-wordpress
     restart: always
     environment:
-      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_HOST: mysql:3306
     env_file: .env
     volumes:
       # - ../wp_themes:/var/www/html/wp-content/themes
@@ -40,8 +57,6 @@ services:
       - ../libs/wp_plugins:/var/www/html/wp-content/plugins
 
 volumes:
-  db_data:
-    driver: local
-
+  mysql_data:
   ssl-certs:
   vhosts:

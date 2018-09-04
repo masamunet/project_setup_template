@@ -11,6 +11,9 @@ const mkDir = [
       'wp_themes',
       'wp_plugins',
     ]},
+    { name: 'storages', children: [
+      'mysql',
+    ]}
   ]},
 ];
 

@@ -11,6 +11,7 @@ storage:
       path: /home/core/.bashrc
       contents:
         inline: |
+          export TZ=JST-9
           alias dc="docker-compose"
           alias dcup="docker-compose up -d"
           alias dcrun="docker-compose run"
@@ -23,8 +24,15 @@ storage:
       contents:
         inline: |
           #!/bin/bash
-          while [ ! -e /opt/bin/docker-compose -o ! -e /home/core/docker -o ! -e /home/core/development -o ! -e /home/core/libs/wp_themes  -o ! -e /home/core/libs/wp_plugins ]; do wait; sleep 1; done
-          systemctl start up-docker-compose.service
+          while [ ! -e /opt/bin/docker-compose -o ! -e /home/core/docker -o ! -e /home/core/development -o ! -e /home/core/libs/wp_themes  -o ! -e /home/core/libs/wp_plugins -o ! -e /home/core/storages/mysql ]; do wait; sleep 1; done
+          # systemctl start up-docker-compose.service
+
+          /usr/bin/chmod +w /home/core/libs/wp_plugins
+          /usr/bin/chmod +w /home/core/libs/wp_themes
+          # /usr/bin/chmod +w /home/core/storages/mysql
+          # /usr/bin/chown core:core /home/core/storages/mysql
+          # /bin/bash -c 'docker network rm `docker network ls -q` > /dev/null 2>&1'
+          /opt/bin/docker-compose -f /home/core/docker/docker-compose.yml up -d
 
 systemd:
   units:
@@ -32,6 +40,45 @@ systemd:
     enable: true
   - name: timezone.service
     enable: true
+  - name: swap-memory-create.service
+    enable: true
+    contents: |
+      [Unit]
+      Description=Create swapfile
+      ConditionPathExists=!/swapfile
+      After=dc-watch.service
+
+      [Service]
+      Type=oneshot
+      RemainAfterExit=yes
+      TimeoutStartSec=0
+
+      ExecStart=/usr/bin/sh -c "/usr/bin/dd if=/dev/zero of=/swapfile bs=1M count=1024"
+      ExecStart=/usr/bin/sh -c "/usr/sbin/mkswap /swapfile"
+      ExecStart=/usr/bin/sh -c "/usr/sbin/swapon /swapfile"
+
+      [Install]
+      WantedBy=multi-user.target
+  - name: swap-memory.service
+    enable: true
+    contents: |
+      [Unit]
+      Description=Turn on swap
+      After=swap-memory-create.service
+      Requires=swap-memory-create.service
+      ConditionPathExists=/swapfile
+
+      [Service]
+      Type=oneshot
+      Environment="SWAPFILE=/swapfile"
+      RemainAfterExit=true
+      ExecStartPre=/usr/sbin/losetup -f ${SWAPFILE}
+      ExecStart=/usr/bin/sh -c "/usr/sbin/swapon $(/usr/sbin/losetup -j ${SWAPFILE} | /usr/bin/cut -d : -f 1)"
+      ExecStop=/usr/bin/sh -c "/usr/sbin/swapoff $(/usr/sbin/losetup -j ${SWAPFILE} | /usr/bin/cut -d : -f 1)"
+      ExecStopPost=/usr/bin/sh -c "/usr/sbin/losetup -d $(/usr/sbin/losetup -j ${SWAPFILE} | /usr/bin/cut -d : -f 1)"
+
+      [Install]
+      WantedBy=multi-user.target
   - name: install-docker-compose.service
     enable: true
     contents: |
@@ -46,56 +93,55 @@ systemd:
       RemainAfterExit=yes
       TimeoutStartSec=0
 
-      Environment=COMPOSE_VERSION="1.14.0"
+      Environment=SYSTEMD_LOG_LEVEL=debug
       ExecStart=/usr/bin/mkdir -p /opt/bin/
       ExecStart=/usr/bin/curl -o /opt/bin/docker-compose -sL "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-linux-x86_64"
       ExecStart=/usr/bin/chmod +x /opt/bin/docker-compose
 
       [Install]
       WantedBy=multi-user.target
-  - name: up-docker-compose.service
-    enable: true
-    contents: |
-      [Unit]
-      Description=Up docker-compose
-      After=install-docker-compose.service network.target docker.service
-      Requires=install-docker-compose.service
-      ConditionPathExists=/home/core/docker/
-
-      [Service]
-      Type=simple
-      User=core
-      Restart=always
-      WorkingDirectory=/home/core/docker
-
-      # Remove old containers, images and volumes
-      # ExecStartPre=/opt/bin/docker-compose -f /home/core/docker/docker-compose.yml down -v
-      # ExecStartPre=/opt/bin/docker-compose -f /home/core/docker/docker-compose.yml rm -v
-      # ExecStartPre=-/bin/bash -c 'docker volume rm $(docker volume ls -q)'
-      # ExecStartPre=-/bin/bash -c 'docker rmi $(docker images | grep "<none>" | awk \'{print $3}\')'
-      # ExecStartPre=-/bin/bash -c 'docker rm -v $(docker ps -aq)'
-
-      # Compose up
-      ExecStart=/opt/bin/docker-compose -f /home/core/docker/docker-compose.yml up -d
-
-      # Compose down, remove containers and volumes
-      # ExecStop=/opt/bin/docker-compose -f /home/core/docker/docker-compose.yml down -v
-      ExecStop=/opt/bin/docker-compose -f /home/core/docker/docker-compose.yml down
-
-      [Install]
-      WantedBy=multi-user.target
+  # - name: up-docker-compose.service
+  #   enable: false
+  #   contents: |
+  #     [Unit]
+  #     Description=Up docker-compose
+  #     After=install-docker-compose.service network.target docker.service
+  #     Requires=install-docker-compose.service
+  #     ConditionPathExists=/home/core/docker/
+  #
+  #     [Service]
+  #     Type=simple
+  #     Restart=always
+  #     WorkingDirectory=/home/core/docker
+  #     User=core
+  #
+  #     # Remove old containers, images and volumes
+  #     # ExecStartPre=/opt/bin/docker-compose -f /home/core/docker/docker-compose.yml down -v
+  #     # ExecStartPre=/opt/bin/docker-compose -f /home/core/docker/docker-compose.yml rm -v
+  #     # ExecStartPre=-/bin/bash -c 'docker volume rm $(docker volume ls -q)'
+  #     # ExecStartPre=-/bin/bash -c 'docker rmi $(docker images | grep "<none>" | awk \'{print $3}\')'
+  #     # ExecStartPre=-/bin/bash -c 'docker rm -v $(docker ps -aq)'
+  #
+  #     # Compose up
+  #     ExecStart=/opt/bin/docker-compose -f /home/core/docker/docker-compose.yml up -d
+  #
+  #     # Compose down, remove containers and volumes
+  #     # ExecStop=/opt/bin/docker-compose -f /home/core/docker/docker-compose.yml down -v
+  #     ExecStop=/opt/bin/docker-compose -f /home/core/docker/docker-compose.yml down
+  #
+  #     [Install]
+  #     WantedBy=multi-user.target
   - name: dc-watch.service
     enable: true
     contents: |
       [Unit]
       Description=Watch docker mount directory
-      After=install-docker-compose.service up-docker-compose.service
-      Requires=install-docker-compose.service up-docker-compose.service
+      After=install-docker-compose.service
+      Requires=install-docker-compose.service
 
       [Service]
-      Type=oneshot
-      RemainAfterExit=yes
-      TimeoutStartSec=0
+      Type=simple
+      User=core
 
       ExecStart=/opt/bin/dc_watch.sh
 
