@@ -6,7 +6,7 @@ class Vagrant{
 
   constructor(onComplete = ()=>{})
   {
-    this.onComplate = onComplete;
+    this.onComplete = onComplete;
   }
 
   setup(projectName)
@@ -46,7 +46,7 @@ class Vagrant{
       }
       if(++check === 2){
         console.log('Vagrant generateConfig complete!');
-        this.onComplate();
+        this.onComplete();
       }
     };
     const writeConfigFile = (data) => {

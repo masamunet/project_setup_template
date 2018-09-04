@@ -10,12 +10,3 @@ $forwarded_ports = {
   '8000' => '8000',
   '8080' => '8080',
 }
-
-$provision_command = <<-PROVISION
-/usr/bin/mkdir -p /opt/bin/
-version=$(curl https://github.com/docker/compose/releases/latest -sLI -o /dev/null -w '%{url_effective}' | sed 's:.*/::')
-/usr/bin/curl -L "https://github.com/docker/compose/releases/download/$version/docker-compose-$(uname -s)-$(uname -m)" -o /opt/bin/docker-compose
-/usr/bin/chmod +x /opt/bin/docker-compose
-PROVISION
-
-$startup_command = '/opt/bin/docker-compose -f /home/core/docker/docker-compose.yml up -d'

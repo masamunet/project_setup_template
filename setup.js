@@ -22,6 +22,7 @@ const Util = require('./system/classes/Util').Util;
 const Directory = require('./system/classes/Directory').Directory;
 const Vagrant = require('./system/classes/Vagrant').Vagrant;
 const Docker = require('./system/classes/Docker').Docker;
+const File = require('./system/classes/File').File;
 
 
 const start = ()=>{
@@ -35,7 +36,12 @@ const vagrant = ()=>{
 };
 
 const docker = ()=>{
-  const cls = new Docker();
+  const cls = new Docker(file);
+  cls.setup(projectName);
+};
+
+const file = ()=>{
+  const cls = new File();
   cls.setup(projectName);
 };
 

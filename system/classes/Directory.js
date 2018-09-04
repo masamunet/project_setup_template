@@ -4,7 +4,7 @@ class Directory{
 
   constructor(onComplete = ()=>{})
   {
-    this.onComplate = onComplete;
+    this.onComplete = onComplete;
   }
 
   createDirectories(dir)
@@ -54,7 +54,7 @@ class Directory{
   complete()
   {
     console.log('Directory complete!');
-    this.onComplate();
+    this.onComplete();
   }
 
   static convertDirToPath(dir, current = '.', arr = []){

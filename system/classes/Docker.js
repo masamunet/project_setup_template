@@ -5,7 +5,7 @@ class Docker{
 
   constructor(onComplete = ()=>{})
   {
-    this.onComplate = onComplete;
+    this.onComplete = onComplete;
   }
 
   setup(projectName)
@@ -19,7 +19,7 @@ class Docker{
       }
       if(++this.ret === 3){
         console.log('Docker complete!');
-        this.onComplate();
+        this.onComplete();
       }
     };
     fs.copyFile(
