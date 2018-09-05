@@ -1,4 +1,4 @@
-# P.S.T
+# P.S.T!
 
 ## これは何？
 
@@ -93,7 +93,9 @@ node setup
 
 ### 作業開始
 
-作成されたプロジェクトのvagrantディレクトリに移動します。
+作成されたプロジェクトのvagrantディレクトリに移動します。  
+<プロジェクト名> / vagrant_<プロジェクト名>  
+に作成されます。
 
 ```bash:例
 cd myProject/vagrant_myProject
