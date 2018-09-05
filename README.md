@@ -184,7 +184,8 @@ git clone https://github.com/coreos/coreos-vagrant.git
 
 system/vagrant-template/cloud-config-template.yml
 
-を参考にしてください。
+を参考にしてください。  
+作者がそもそもsystemdに対する理解が浅く、試行錯誤というかむやみやたらに設定を試す方法を繰り返してきた経緯があります。ご不明な点がありましたら十中八九作者の間違いですので、遠慮無く訂正してください。
 
 ### Docker
 
