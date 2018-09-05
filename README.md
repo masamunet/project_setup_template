@@ -136,8 +136,8 @@ gulp watch-bs
 
 ### 作業終了
 
-一日の作業終わりや、別プロジェクトの作業が入った場合、作業を途中でs中断する場合はVagrantを終了する必要があります。  
-作業ディレクトリ（クイックスタートガイドではmyProjyect）で次のコマンドを実行してください。
+一日の作業終わりや、別プロジェクトの作業が入った場合、作業を途中で中断する場合はVagrantを終了する必要があります。  
+作業ディレクトリ（クイックスタートガイドではmyProject）で次のコマンドを実行してください。
 
 ```bash
 node com down
@@ -190,7 +190,7 @@ system/vagrant-template/cloud-config-template.yml
 ### Docker
 
 このテンプレートの肝の部分になります。  
-このテンプレートでは文面において特に断りを入れない限りはdocker-composeは省略して説明していますが、Dockerとdocker-composeで開発環境を作ることが、肝心となるように設計されています。  
+このテンプレートではdocker-composeで開発環境を作ることが、肝心となるように設計されています。  
 カスタマイズする場合は、docker-compose.ymlを参考に、できるだけdevelopmentにメインのワーキングディレクトリがくるように設計するのがミソになります。
 
 #### docker-compose.yml
