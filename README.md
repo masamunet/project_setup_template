@@ -29,7 +29,7 @@ Vagrant + Docker の開発環境をサクッと作れるプロジェクトテン
 プロジェクトを作りたいディレクトリで、以下のコマンドを実行してください。
 
 ```bash
-git clone git@github.com:masamunet/project_setup_template.git
+git clone https://github.com/masamunet/project_setup_template.git
 ```
 
 できたディレクトリに移動します。
@@ -66,7 +66,6 @@ node setup
 > Vagrant setup complete!  
 > Vagrant generateConfig complete!  
 > Docker complete!  
-> file copy complete!
 
 ### プロジェクトディレクトリの構成
 
