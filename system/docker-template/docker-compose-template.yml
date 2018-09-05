@@ -19,8 +19,9 @@ services:
   mysql:
     image: mysql:5.7
     volumes:
-      - mysql_data:/var/lib/mysql
-      # - ../storages/mysql:/var/lib/mysql
+      # - mysql_data:/var/lib/mysql
+      - ../storages/mysql:/var/lib/mysql
+    user: mysql
     restart: always
     env_file: .env
 
@@ -54,9 +55,8 @@ services:
       # - ../wp_themes:/var/www/html/wp-content/themes
       - ../development/wp_themes/:/var/www/html/wp-content/themes/understrap-child-master
       - ../libs/wp_themes/understrap-master:/var/www/html/wp-content/themes/understrap-master
-      - ../libs/wp_plugins:/var/www/html/wp-content/plugins
 
 volumes:
-  mysql_data:
+  # mysql_data:
   ssl-certs:
   vhosts:

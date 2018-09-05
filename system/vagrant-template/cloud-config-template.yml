@@ -24,12 +24,17 @@ storage:
       contents:
         inline: |
           #!/bin/bash
-          while [ ! -e /opt/bin/docker-compose -o ! -e /home/core/docker -o ! -e /home/core/development -o ! -e /home/core/libs/wp_themes  -o ! -e /home/core/libs/wp_plugins -o ! -e /home/core/storages/mysql ]; do wait; sleep 1; done
+          while [ ! -e /opt/bin/docker-compose -o ! -e /home/core/docker -o ! -e /home/core/development -o ! -e /home/core/libs/wp_themes -o ! -e /home/core/storages/mysql ]; do wait; sleep 1; done
 
-          /usr/bin/chmod +w /home/core/libs/wp_plugins
+          declare -i i=0
+          while [[ $i -lt 10 ]]
+          do
+            sleep 1
+            i=$((i+1))
+          done
+
           /usr/bin/chmod +w /home/core/libs/wp_themes
           /usr/bin/chmod -R +w /home/core/storages
-          # /usr/bin/chown -R core:core /home/core/storages
           /opt/bin/docker-compose -f /home/core/docker/docker-compose.yml up -d
 
 systemd:

@@ -1,7 +1,9 @@
+$instance_name_prefix="${projectName}"
+$vm_memory = 1024
+
 $shared_folders = {
   '../development' => '/home/core/development',
   '../libs/wp_themes' => '/home/core/libs/wp_themes',
-  '../libs/wp_plugins' => '/home/core/libs/wp_plugins',
   '../storages' => '/home/core/storages',
   '../server' => '/home/core/docker',
 }

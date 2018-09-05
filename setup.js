@@ -2,14 +2,13 @@ const projectName = (process.argv[2])? process.argv[2] : 'myProject';
 
 const mkDir = [
   {name: projectName, children: [
-    'development',
+    'development::777',
     'documents',
     { name: 'server', children: [
       'my-wordpress',
     ]},
     { name: 'libs', children: [
       'wp_themes::777',
-      'wp_plugins::777',
     ]},
     { name: 'storages::777', children: [
       'mysql::777',

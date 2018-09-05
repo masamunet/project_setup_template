@@ -59,6 +59,7 @@ class Vagrant{
           throw err;
           return false;
         }
+        data = data.replace(/\${projectName}/g, projectName);
         configFileData += "\n" + data;
         writeConfigFile(configFileData);
       });
@@ -79,7 +80,6 @@ class Vagrant{
         return this;
       }
       data = data.replace("$update_channel='alpha'", "$update_channel='stable'")
-      data = data.replace(/#\$vm_memory/g, '$vm_memory');
       configFileData = data;
       readConfigFile();
     });
