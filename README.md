@@ -72,8 +72,6 @@ node setup
 
 新しく作成されたプロジェクトは次のような構成になっています。
 
-+ com.js
-  + 作業に便利なコマンドが書かれてあります。通常これを編集することはありません。
 + vagrant_myProject
   + Vagrant関係のファイルが収められています。Vagrantに詳しい方は自由ここを編集して独自のVagrant環境にカスタムできますが、通常はここを編集することはありません。
 + storages
@@ -96,17 +94,16 @@ node setup
 
 ### 作業開始
 
-作成されたプロジェクトディレクトリに移動します。
+作成されたプロジェクトのvagrantディレクトリに移動します。
 
 ```bash:例
-cd myProject
+cd myProject/vagrant_myProject
 ```
 
-作業はVagrantを起動して行うので、そのVagrantの起動コマンドを実行する必要があります。
-以下のコマンドを実行してください。
+次のコマンドを実行して、Vagrantを起動します。
 
-```
-node com up
+```bash
+vagrant up
 ```
 
 しばらくメッセージが表示され、落ち着いた頃にVagrantが起動完了します。
@@ -140,7 +137,7 @@ gulp watch-bs
 作業ディレクトリ（クイックスタートガイドではmyProject）で次のコマンドを実行してください。
 
 ```bash
-node com down
+vagrant halt
 ```
 
 しばらく待って、Vagrantが終了したニュアンスのメッセージが表示されれば作業終了です。

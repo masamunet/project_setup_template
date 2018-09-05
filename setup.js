@@ -36,7 +36,7 @@ const vagrant = ()=>{
 };
 
 const docker = ()=>{
-  const cls = new Docker(file);
+  const cls = new Docker();
   cls.setup(projectName);
 };
 
