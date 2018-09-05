@@ -9,7 +9,8 @@ class Directory{
 
   createDirectories(dir)
   {
-    this.arr = Directory.convertDirToPath(dir);
+    this.mode = {};
+    this.arr = this.convertDirToPath(dir);
     this.count = 0;
     this.next();
   }
@@ -33,6 +34,22 @@ class Directory{
         throw err;
         return this;
       }
+      if(this.mode[dirName]){
+        this.chmod(dirName, this.mode[dirName]);
+      }else{
+        this.isComplete(dirName);
+      }
+    });
+  }
+
+  chmod(dirName, mode)
+  {
+    fs.chmod(dirName, mode, (err)=>{
+      if(err){
+        throw err;
+        return this;
+      }
+      console.log(`chmod: ${mode} ${dirName}`);
       this.isComplete(dirName);
     });
   }
@@ -57,17 +74,26 @@ class Directory{
     this.onComplete();
   }
 
-  static convertDirToPath(dir, current = '.', arr = []){
+  splitPathAndMode(dirName, current)
+  {
+    let path = dirName.split('::');
+    if(path[1]){
+      this.mode[`${current}/${path[0]}`] = path[1];
+    }
+    return path[0];
+  }
+
+  convertDirToPath(dir, current = '.', arr = []){
     dir.forEach((element)=>{
       if(typeof element === 'string'){
         // 文字列ならDirectoryを作成
-        arr.push(`${current}/${element}`);
+        arr.push(`${current}/${this.splitPathAndMode(element, current)}`);
       }else{
         // それ以外ならフォーマットに沿って再帰
-        let c = `${current}/${element.name}`;
+        let c = `${current}/${this.splitPathAndMode(element.name, current)}`;
         let children = element.children;
         arr.push(c);
-        return Directory.convertDirToPath(children, c, arr);
+        return this.convertDirToPath(children, c, arr);
       }
     });
     return arr;

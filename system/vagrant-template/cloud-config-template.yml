@@ -28,8 +28,8 @@ storage:
 
           /usr/bin/chmod +w /home/core/libs/wp_plugins
           /usr/bin/chmod +w /home/core/libs/wp_themes
-          # /usr/bin/chmod +w /home/core/storages/mysql
-          # /usr/bin/chown core:core /home/core/storages/mysql
+          /usr/bin/chmod -R +w /home/core/storages
+          # /usr/bin/chown -R core:core /home/core/storages
           /opt/bin/docker-compose -f /home/core/docker/docker-compose.yml up -d
 
 systemd:

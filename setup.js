@@ -8,11 +8,11 @@ const mkDir = [
       'my-wordpress',
     ]},
     { name: 'libs', children: [
-      'wp_themes',
-      'wp_plugins',
+      'wp_themes::777',
+      'wp_plugins::777',
     ]},
-    { name: 'storages', children: [
-      'mysql',
+    { name: 'storages::777', children: [
+      'mysql::777',
     ]}
   ]},
 ];
