@@ -124,7 +124,7 @@ development
 デフォルトではwordpressの[WordPress \+ Bootstrap 4 Theme Framework \- UnderStrap](https://understrap.com/)というテーマを入れています。  
 
 ```bash
-cd development/understrap-child
+cd development/wp_themes
 gulp watch-bs
 ```
 
@@ -166,7 +166,7 @@ myProject/vagrant_myProject/VagrantFile
 git clone https://github.com/coreos/coreos-vagrant.git
 ```
 
-で作成されたファイルをそのまま使用しています。このVagrantFileを使うのであれば、可能な限り、次に示すファイルを変更する方法をとってください。  
+で作成されたファイルをそのまま使用しています(一部例外あり)。このVagrantFileを使うのであれば、可能な限り、次に示すファイルを変更する方法をとってください。  
 別のVagrantFileを使用する場合はその限りではありません。
 
 #### config.rb

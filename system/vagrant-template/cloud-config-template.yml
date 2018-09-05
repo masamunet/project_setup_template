@@ -44,7 +44,7 @@ systemd:
       [Unit]
       Description=Create swapfile
       ConditionPathExists=!/swapfile
-      After=dc-watch.service
+      After=install-docker-compose.service
 
       [Service]
       Type=oneshot
