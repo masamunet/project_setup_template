@@ -62,10 +62,15 @@ node setup
 
 このようなメッセージが表示されて、[myProject] ディレクトリが作成されていれば成功です！
 
+> chmod: 777 ./myProject/development  
+> chmod: 777 ./myProject/libs/wp_themes  
+> chmod: 777 ./myProject/storages  
+> chmod: 777 ./myProject/storages/mysql  
 > Directory complete!  
 > Vagrant setup complete!  
 > Vagrant generateConfig complete!  
 > Docker complete!  
+> VagrantFile complete!  
 
 ### プロジェクトディレクトリの構成
 
@@ -74,11 +79,11 @@ node setup
 + vagrant_myProject
   + Vagrant関係のファイルが収められています。Vagrantに詳しい方は自由ここを編集して独自のVagrant環境にカスタムできますが、通常はここを編集することはありません。
 + storages
-  + 将来、mysqlのデーターなどを格納するディレクトリですが、今現在使用していません。
+  + デフォルトでmysqlのデーターが保存されています。Docker側からストレージ関連のボリュームを扱うことを期待されるディレクトリになります。
 + server
   + Docker関係のファイルが収められています。Dockerに詳しい方は自由ここを編集して独自のVagrant環境にカスタムできます。デフォルトでwordpress + mysql + phpMyAdmin のDocker環境が構築されています。この環境をそのまま使ってもいいですし、ご自身で用意したDocker環境を保存しておくこともできます。
 + libs
-  + あらかじめ[wp_plugins]と[wp_themes]というフォルダがあって、そこにデフォルトでインストールされているwordpress関係のファイルが収められています。通常これを編集することはありません。  
+  + あらかじめ[wp_themes]というフォルダがあって、そこにデフォルトでインストールされているwordpress関係のファイルが収められています。通常これを編集することはありません。  
   その他、自分やプロジェクトチームで編集するわけではない外部ライブラリなどを整理しておくディレクトリになります。
 + documents
   + ここにプロジェクトに必要な書類やドキュメントを自由に入れてください。
