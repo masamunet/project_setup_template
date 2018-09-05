@@ -29,7 +29,7 @@ Vagrant + Docker の開発環境をサクッと作れるプロジェクトテン
 プロジェクトを作りたいディレクトリで、以下のコマンドを実行してください。
 
 ```bash
-git clone git@bitbucket.org:utweb/project_setup_template.git
+git clone git@github.com:masamunet/project_setup_template.git
 ```
 
 できたディレクトリに移動します。
@@ -280,6 +280,16 @@ docker-compose up
 
 でDockerの初回起動まで持って行ってください。  
 docker-composeさえインストールがまだの場合、ネットワークが遅すぎなのでしばらく待っていたらdocker-compose はインストールされると思います。
+
+#### 手動でやっても全然動かない・なんかエラーが出る
+
+```bash
+-bash: /usr/bin/docker: Input/output error
+-bash: /home/core/.bash_logout: Input/output error
+-bash: /etc/bash/bash_logout: Input/output error
+```
+
+Vagrantゲスト上で手動でインストール行おうとしても上記のようなエラーが出て全然先に進まない場合、Vagrant環境をいったん削除・再構築したほうがいい場合があります。次の「プロジェクトを削除したい・Vagrantがなんかおかしい」を参考にしてください。
 
 #### プロジェクトを削除したい・Vagrantがなんかおかしい
 
