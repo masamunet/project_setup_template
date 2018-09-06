@@ -247,8 +247,6 @@ node install
 
 + [Vagrant by HashiCorp](https://www.vagrantup.com/)
 + [Node\.js](https://nodejs.org/ja/)
-+ [coreos/vagrant\-ignition: A Vagrant plugin for providing Ignition Configs to VirtualBox virtual machines](https://github.com/coreos/vagrant-ignition)
-  + なんかあらかじめ入れておかないとVagrantゲストが起動しない
 
 ### あると便利
 

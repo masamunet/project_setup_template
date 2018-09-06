@@ -18,13 +18,17 @@ const mkDir = [
 
 
 const Util = require('./system/classes/Util').Util;
+const InstallPlugins = require('./system/classes/InstallPlugins').InstallPlugins;
 const Directory = require('./system/classes/Directory').Directory;
 const Vagrant = require('./system/classes/Vagrant').Vagrant;
 const Docker = require('./system/classes/Docker').Docker;
 const VagrantFile = require('./system/classes/VagrantFile').VagrantFile;
 
+const plugin = ()=>{
+  const cls = new InstallPlugins(directory);
+};
 
-const start = ()=>{
+const directory = ()=>{
   const cls = new Directory(vagrant);
   cls.createDirectories(mkDir);
 };
@@ -44,4 +48,8 @@ const vagrantFile = ()=>{
   cls.setup(projectName);
 };
 
+
+const start = ()=>{
+  plugin();
+};
 start();
