@@ -12,7 +12,7 @@ class VagrantFile{
     const keyword = `Vagrant.configure("2") do |config|`;
     const add_str = `
     # set disksize
-    config.disksize.size = '20GB'
+    config.disksize.size = '25GB'
     # add for dns
     config.vm.provider :virtualbox do |vb|
       vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
