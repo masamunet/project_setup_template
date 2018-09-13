@@ -72,7 +72,6 @@ node setup
 > Docker complete!
 > VagrantFile complete!
 
-※このあと必要なVagrantプラグインのインストールが始まる場合があります。
 
 ### プロジェクトディレクトリの構成
 
@@ -258,7 +257,11 @@ node install
 
 ## トラブルシュート
 
-随時更新中。
+Vagrantがうまく起動しない場合、プラグインを手動でインストールしてみてください。
+
+```
+vagrant plugin install vagrant-ignition vagrant-disksize vagrant-docker-compose
+```
 
 #### いくら待ってもブラウザにwordpress初回インストール画面が表示されない
 

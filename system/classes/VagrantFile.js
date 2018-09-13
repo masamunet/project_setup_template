@@ -19,6 +19,8 @@ class VagrantFile{
       vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
     end
     `;
+    const installPluginStr = `%w(vagrant-ignition)`;
+    const installPluginAdd = `%w(vagrant-ignition vagrant-disksize vagrant-docker-compose)`
     const callback = (err) => {
       if(err){
         console.log(err);
@@ -32,7 +34,8 @@ class VagrantFile{
       `${projectName}/${projectName}_vagrant/VagrantFile`,
       `${projectName}/${projectName}_vagrant/VagrantFile`,
       [
-        [keyword, keyword + '\n' + add_str]
+        [keyword, keyword + '\n' + add_str],
+        [installPluginStr, installPluginAdd]
       ],
       callback
     );
