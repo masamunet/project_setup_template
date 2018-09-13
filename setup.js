@@ -4,7 +4,7 @@ const mkDir = [
   {name: projectName, children: [
     'development::777',
     'documents',
-    { name: 'server', children: [
+    { name: `${projectName}_server`, children: [
       'my-wordpress',
     ]},
     { name: 'libs', children: [
@@ -24,9 +24,6 @@ const Vagrant = require('./system/classes/Vagrant').Vagrant;
 const Docker = require('./system/classes/Docker').Docker;
 const VagrantFile = require('./system/classes/VagrantFile').VagrantFile;
 
-const plugin = ()=>{
-  const cls = new InstallPlugins(directory);
-};
 
 const directory = ()=>{
   const cls = new Directory(vagrant);
@@ -44,12 +41,15 @@ const docker = ()=>{
 };
 
 const vagrantFile = ()=>{
-  const cls = new VagrantFile();
+  const cls = new VagrantFile(plugin);
   cls.setup(projectName);
 };
 
+const plugin = ()=>{
+  const cls = new InstallPlugins();
+};
 
 const start = ()=>{
-  plugin();
+  directory();
 };
 start();
