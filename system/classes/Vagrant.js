@@ -11,7 +11,7 @@ class Vagrant{
 
   setup(projectName)
   {
-    const command = `git clone https://github.com/coreos/coreos-vagrant.git ${projectName}/vagrant_${projectName}`;
+    const command = `git clone https://github.com/coreos/coreos-vagrant.git ${projectName}/${projectName}_vagrant`;
     exec(command, (err, stdout, stderr) => {
       if (err) {
         console.log(err);
@@ -50,7 +50,7 @@ class Vagrant{
       }
     };
     const writeConfigFile = (data) => {
-      fs.writeFile(`${projectName}/vagrant_${projectName}/config.rb`, data, callback);
+      fs.writeFile(`${projectName}/${projectName}_vagrant/config.rb`, data, callback);
     };
     const readConfigFile = ()=>{
       fs.readFile('system/vagrant-template/config-template.rb', 'utf8', (err, data) => {
@@ -67,13 +67,13 @@ class Vagrant{
     let configFileData;
     this.readAndReplace(
       'system/vagrant-template/config-template.ign',
-      `${projectName}/vagrant_${projectName}/config.ign`,
+      `${projectName}/${projectName}_vagrant/config.ign`,
       [
         [/\${COMPOSE_VERSION}/g, version]
       ],
       callback
     );
-    fs.readFile(`${projectName}/vagrant_${projectName}/config.rb.sample`, 'utf8', (err, data) => {
+    fs.readFile(`${projectName}/${projectName}_vagrant/config.rb.sample`, 'utf8', (err, data) => {
       if(err){
         console.log(err);
         throw err;

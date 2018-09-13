@@ -29,8 +29,8 @@ class VagrantFile{
       this.onComplete();
     };
     this.readAndReplace(
-      `${projectName}/vagrant_${projectName}/VagrantFile`,
-      `${projectName}/vagrant_${projectName}/VagrantFile`,
+      `${projectName}/${projectName}_vagrant/VagrantFile`,
+      `${projectName}/${projectName}_vagrant/VagrantFile`,
       [
         [keyword, keyword + '\n' + add_str]
       ],
