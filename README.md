@@ -66,21 +66,23 @@ node setup
 > chmod: 777 ./myProject/libs/wp_themes  
 > chmod: 777 ./myProject/storages  
 > chmod: 777 ./myProject/storages/mysql  
-> Directory complete!  
-> Vagrant setup complete!  
-> Vagrant generateConfig complete!  
-> Docker complete!  
-> VagrantFile complete!  
+> Directory complete!
+> Vagrant setup complete!
+> Vagrant generateConfig complete!
+> Docker complete!
+> VagrantFile complete!
+
+※このあと必要なVagrantプラグインのインストールが始まる場合があります。
 
 ### プロジェクトディレクトリの構成
 
 新しく作成されたプロジェクトは次のような構成になっています。
 
-+ vagrant_myProject
++ myProject_vagrant
   + Vagrant関係のファイルが収められています。Vagrantに詳しい方は自由ここを編集して独自のVagrant環境にカスタムできますが、通常はここを編集することはありません。
 + storages
   + デフォルトでmysqlのデーターが保存されています。Docker側からストレージ関連のボリュームを扱うことを期待されるディレクトリになります。
-+ server
++ myProject_docker
   + Docker関係のファイルが収められています。Dockerに詳しい方は自由ここを編集して独自のVagrant環境にカスタムできます。デフォルトでwordpress + mysql + phpMyAdmin のDocker環境が構築されています。この環境をそのまま使ってもいいですし、ご自身で用意したDocker環境を保存しておくこともできます。
 + libs
   + あらかじめ[wp_themes]というフォルダがあって、そこにデフォルトでインストールされているwordpress関係のファイルが収められています。通常これを編集することはありません。  
@@ -91,19 +93,19 @@ node setup
   + ここがプロジェクトの開発用ディレクトリになります。デフォルトでwordpressのテンプレート、understrapが入ります。このunderstrapを使って開発を進めてもいいですし、必要なければ消して自由に使ってください。
 
 特徴のところでも触れましたが、このテンプレートの特徴のひとつとして、高機能な仮想化環境を提供しておきながらお互いが干渉し合わない、という点があります。  
-つまり、developmentディレクトリの中だけで普段通りのNode.jsを使った静的ページの開発のみを行ってもいいですし、serverディレクトリに独自のDocker環境を構築してもいいですし、vagrant_myProjectディレクトリを使ってVagrantからカスタマイズを行ってもかまいません。  
-もちろん、テンプレートの提供してあるとおりに、VagrantのゲストがホストのserverディレクトリにあるDocker環境を動かして、Dockerのゲストがホストのdevelopmentディレクトリにある開発環境を実行する開発スタイルをとることができれば、本番環境構築までずっと楽になるでしょう。
+つまり、developmentディレクトリの中だけで普段通りのNode.jsを使った静的ページの開発のみを行ってもいいですし、serverディレクトリに独自のDocker環境を構築してもいいですし、myProject_vagrantディレクトリを使ってVagrantからカスタマイズを行ってもかまいません。  
+もちろん、テンプレートの提供してあるとおりに、VagrantのゲストがホストのmyProject_dockerディレクトリにあるDocker環境を動かして、Dockerのゲストがホストのdevelopmentディレクトリにある開発環境を実行する開発スタイルをとることができれば、本番環境構築までずっと楽になるでしょう。
 
 このクイックスタートガイドではデフォルト環境で開発を進める前提で説明していきます。
 
 ### 作業開始
 
 作成されたプロジェクトのvagrantディレクトリに移動します。  
-<プロジェクト名> / vagrant_<プロジェクト名>  
+<プロジェクト名> / <プロジェクト名> _ vagrant  
 に作成されます。
 
 ```bash:例
-cd myProject/vagrant_myProject
+cd myProject/myProject_vagrant
 ```
 
 次のコマンドを実行して、Vagrantを起動します。
@@ -198,7 +200,7 @@ system/vagrant-template/cloud-config-template.yml
 
 #### docker-compose.yml
 
-myProject/server/docker-compose.yml
+myProject/myProject_docker/docker-compose.yml
 
 必要に応じて編集してください。  
 ホスト側にdocker-compose実行環境があるなら、Vagrantを起動・経由しなくても直接このserverディレクトリで
@@ -208,7 +210,7 @@ docker-compose up -d
 ```
 
 を実行すれば稼働します。  
-つまり、本番環境用docker-compose を追加で server/production.yml などと作っておいて
+つまり、本番環境用docker-compose を追加で myProject_docker/production.yml などと作っておいて
 
 ```
 docker-compose -f docker-compose.yml -f production.yml up -d
@@ -295,7 +297,7 @@ Vagrantゲスト上で手動でインストール行おうとしても上記の�
 
 #### プロジェクトを削除したい・Vagrantがなんかおかしい
 
-myProject/vagrant_myProjectディレクトリ内で、
+myProject/myProject_vagrantディレクトリ内で、
 
 ```bash
 vagrant destroy --force
