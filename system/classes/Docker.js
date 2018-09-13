@@ -24,12 +24,12 @@ class Docker{
     };
     fs.copyFile(
       'system/docker-template/docker-compose-template.yml',
-      `${projectName}/${projectName}_server/docker-compose.yml`,
+      `${projectName}/${projectName}_docker/docker-compose.yml`,
       callback
     );
     fs.copyFile(
       'system/docker-template/Dockerfile-template',
-      `${projectName}/${projectName}_server/my-wordpress/Dockerfile`,
+      `${projectName}/${projectName}_docker/my-wordpress/Dockerfile`,
       callback
     );
     fs.readFile('system/docker-template/.env.template', 'utf8', (err, data) =>{
@@ -41,7 +41,7 @@ class Docker{
       const password = Util.createRandomString(32);
       data = data.replace(/\${projectName}/g, projectName);
       data = data.replace(/\${password}/g, password);
-      fs.writeFile(`${projectName}/${projectName}_server/.env`, data, callback);
+      fs.writeFile(`${projectName}/${projectName}_docker/.env`, data, callback);
     });
   }
 

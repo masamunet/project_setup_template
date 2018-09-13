@@ -4,7 +4,7 @@ const mkDir = [
   {name: projectName, children: [
     'development::777',
     'documents',
-    { name: `${projectName}_server`, children: [
+    { name: `${projectName}_docker`, children: [
       'my-wordpress',
     ]},
     { name: 'libs', children: [
