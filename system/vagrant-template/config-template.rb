@@ -5,7 +5,7 @@ $shared_folders = {
   '../development' => '/home/core/development',
   '../libs/wp_themes' => '/home/core/libs/wp_themes',
   '../storages' => '/home/core/storages',
-  '../server' => '/home/core/docker',
+  '../${projectName}_docker' => '/home/core/docker',
 }
 
 $forwarded_ports = {
