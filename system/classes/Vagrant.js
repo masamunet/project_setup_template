@@ -11,15 +11,25 @@ class Vagrant{
 
   setup(projectName)
   {
-    const command = `git clone https://github.com/coreos/coreos-vagrant.git ${projectName}/${projectName}_vagrant`;
-    exec(command, (err, stdout, stderr) => {
-      if (err) {
-        console.log(err);
-        throw err
-        return this;
+    const vagrantProjectDirName = `${projectName}_vagrant`;
+    // ディレクトリの存在チェック
+    fs.exists(`${projectName}/${vagrantProjectDirName}`, (exists)=>{
+      if(exists){
+        // 存在していれば終了。
+        return false;
+      }else{
+        // 存在していなければ処理を継続
+        const command = `git clone https://github.com/coreos/coreos-vagrant.git ${projectName}/${vagrantProjectDirName}`;
+        exec(command, (err, stdout, stderr) => {
+          if (err) {
+            console.log(err);
+            throw err
+            return this;
+          }
+          console.log('Vagrant setup complete!');
+          this.generateConfig(projectName);
+        });
       }
-      console.log('Vagrant setup complete!');
-      this.generateConfig(projectName);
     });
   }
 

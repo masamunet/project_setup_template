@@ -67,9 +67,9 @@ node setup
 > chmod: 777 ./myProject/storages  
 > chmod: 777 ./myProject/storages/mysql  
 > Directory complete!
+> Docker complete!
 > Vagrant setup complete!
 > Vagrant generateConfig complete!
-> Docker complete!
 > VagrantFile complete!
 
 
@@ -241,6 +241,32 @@ node install
 ```
 
 などで初期化して開発を行うこともできます。
+
+## プロジェクトを他人と共有する
+
+Gitを使ってプロジェクトを他人と共有する場合、プロジェクト内のvagrantディレクトリ（myProject/vagrant_myProject）がgitで共有されません。その場合は
+
++ project_setup_template
+  + myProject
+      + development
+      + documents
+      + libs
+      + myProject_docker
+      + storages
+
+このようなディレクトリ構成になっているはずなので（myProject_vagrantが存在しない）、project_setup_templateディレクトリ（setup.jsファイルのあるディレクトリ）で以下のコマンドを実行してください。
+
+```
+node setup myProject clone
+```
+
+myProjectはプロジェクト名に適宜置き換えてください。  
+つまり次のような書式となります。
+
+```
+node setup <プロジェクト名> clone
+```
+
 
 ## 必要構成
 

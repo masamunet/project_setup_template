@@ -1,4 +1,5 @@
 const projectName = (process.argv[2])? process.argv[2] : 'myProject';
+const isClone = (process.argv[3])? process.argv[3]: false;
 
 const mkDir = [
   {name: projectName, children: [
@@ -26,17 +27,17 @@ const VagrantFile = require('./system/classes/VagrantFile').VagrantFile;
 
 
 const directory = ()=>{
-  const cls = new Directory(vagrant);
+  const cls = new Directory(docker);
   cls.createDirectories(mkDir);
 };
 
-const vagrant = ()=>{
-  const cls = new Vagrant(docker);
+const docker = ()=>{
+  const cls = new Docker(vagrant);
   cls.setup(projectName);
 };
 
-const docker = ()=>{
-  const cls = new Docker(vagrantFile);
+const vagrant = ()=>{
+  const cls = new Vagrant(vagrantFile);
   cls.setup(projectName);
 };
 
@@ -50,6 +51,12 @@ const plugin = ()=>{
 };
 
 const start = ()=>{
-  directory();
+  if(isClone !== 'clone'){
+    // 初回セットアップ時はディレクトリ作成から
+    directory();
+  }else{
+    // gitからクローンされたプロジェクトならVagrant作成から
+    vagrant();
+  }
 };
 start();
