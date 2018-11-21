@@ -60,7 +60,7 @@ cd project_setup_template
 node setup
 ```
 
-このようなメッセージが表示されて、[myProject] ディレクトリが作成されていれば成功です！
+このようなメッセージが表示されて、現在の作業ディレクトリの一階層上に[myProject] ディレクトリが作成されていれば成功です！
 
 > chmod: 777 ./myProject/development  
 > chmod: 777 ./myProject/libs/wp_themes  
@@ -78,7 +78,13 @@ node setup
 新しく作成されたプロジェクトは次のような構成になっています。
 
 + myProject_vagrant
-  + Vagrant関係のファイルが収められています。Vagrantに詳しい方は自由ここを編集して独自のVagrant環境にカスタムできますが、通常はここを編集することはありません。
+  + Vagrant関係のファイルが収められています。Vagrantに詳しい方はこの中にあるVagrantFileを編集して独自のVagrant環境にカスタムできますが、通常はここを編集することはありません。
++ myProject_vagrant_config
+  + VagrantFileが参照する、以下の設定ファイルが入っています。
+    + config.rb
+    + config.ign
+    + cloud-config.yml
+  + cloud-config.yml は、config.ign を作成するためのもとのファイルになります。config.ignを更新したい場合は、cloud-config.ymlを変更して、そこからジェネレーターを使ってconfig.ignファイルを作成する流れになります。どうやって作成するかは後述します。
 + storages
   + デフォルトでmysqlのデーターが保存されています。Docker側からストレージ関連のボリュームを扱うことを期待されるディレクトリになります。
 + myProject_docker
@@ -186,10 +192,18 @@ git clone https://github.com/coreos/coreos-vagrant.git
 
 [coreos/vagrant\-ignition: A Vagrant plugin for providing Ignition Configs to VirtualBox virtual machines](https://github.com/coreos/vagrant-ignition)が使用する設定ファイル二なります。ただし、このままでは人が編集するのは困難なため、通常は中間ファイルを作成します。中間ファイルについては
 
-system/vagrant-template/cloud-config-template.yml
+vagrant_myProject_config/cloud-config.yml
 
 を参考にしてください。  
 作者がそもそもsystemdに対する理解が浅く、試行錯誤というかむやみやたらに設定を試す方法を繰り返してきた経緯があります。ご不明な点がありましたら十中八九作者の間違いですので、遠慮無く訂正してください。
+
+中間ファイルである cloud-config.yml から config.ign ファイルを生成するには、[coreos/container\-linux\-config\-transpiler: Convert a Container Linux Config into Ignition](https://github.com/coreos/container-linux-config-transpiler)を参考にインストールを行ってください。そののち、 vagrant_myProject_config/ ディレクトリで
+
+```bash
+ct < cloud-config.yml > config.ign
+```
+
+を実行することで config.ign ファイルが生成されます。
 
 ### Docker
 
@@ -222,6 +236,7 @@ docker-compose -f docker-compose.yml -f production.yml up -d
 wordpressコンテナの設定になります。デフォルトでインストールされるプラグインやテーマなど、ご自由に追加してください。
 
 #### .env
+#### .env.sample
 
 不可視ファイルなので環境によっては発見しにくい場合があります。パスワードなどはプロジェクト作成時に自動生成されますが、必要に応じて編集してください。
 
