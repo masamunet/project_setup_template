@@ -23,8 +23,8 @@ class Docker{
       }
     };
     fs.copyFile(
-      'system/docker-template/docker-compose-template.dev.yml',
-      `../${projectName}/${projectName}_docker/docker-compose.dev.yml`,
+      'system/docker-template/docker-compose-templates.yml',
+      `../${projectName}/${projectName}_docker/docker-compose.yml`,
       callback
     );
     fs.copyFile(
