@@ -98,7 +98,7 @@ node setup
   + ここがプロジェクトの開発用ディレクトリになります。デフォルトでwordpressのテンプレート、understrapが入ります。このunderstrapを使って開発を進めてもいいですし、必要なければ消して自由に使ってください。
 
 特徴のところでも触れましたが、このテンプレートの特徴のひとつとして、高機能な仮想化環境を提供しておきながらお互いが干渉し合わない、という点があります。  
-つまり、developmentディレクトリの中だけで普段通りのNode.jsを使った静的ページの開発のみを行ってもいいですし、serverディレクトリに独自のDocker環境を構築してもいいですし、myProject_vagrantディレクトリを使ってVagrantからカスタマイズを行ってもかまいません。  
+つまり、developmentディレクトリの中だけで普段通りのNode.jsを使った静的ページの開発のみを行ってもいいですし、myProject_dockerディレクトリに独自のDocker環境を構築してもいいですし、myProject_vagrantディレクトリを使ってVagrantからカスタマイズを行ってもかまいません。  
 もちろん、テンプレートの提供してあるとおりに、VagrantのゲストがホストのmyProject_dockerディレクトリにあるDocker環境を動かして、Dockerのゲストがホストのdevelopmentディレクトリにある開発環境を実行する開発スタイルをとることができれば、本番環境構築までずっと楽になるでしょう。
 
 このクイックスタートガイドではデフォルト環境で開発を進める前提で説明していきます。
@@ -262,14 +262,15 @@ node install
 Gitを使ってプロジェクトを他人と共有する場合、プロジェクト内のvagrantディレクトリ（myProject/vagrant_myProject）がgitで共有されません。その場合は
 
 + project_setup_template
-  + myProject
-      + development
-      + documents
-      + libs
-      + myProject_docker
-      + storages
++ myProject
+    + development
+    + documents
+    + libs
+    + myProject_docker
+    + myProject_vagrant_config
+    + storages
 
-このようなディレクトリ構成になっているはずなので（myProject_vagrantが存在しない）、project_setup_templateディレクトリ（setup.jsファイルのあるディレクトリ）で以下のコマンドを実行してください。
+このようなディレクトリ構成になっているはずなので（myProject_vagrantが存在しない。設定ファイルが入ってるmyProject_vagrant_configだけは残っている）、project_setup_templateディレクトリ（setup.jsファイルのあるディレクトリ）で以下のコマンドを実行してください。
 
 ```
 node setup myProject clone
