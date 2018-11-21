@@ -351,7 +351,7 @@ vagrant up
 + [VagrantのSynced FoldersでNFSを利用するときにsudoのパスワード入力を省略する](https://qiita.com/nmatayoshi/items/fb96913140cb285e59e2)
 
 ```bash
-sudo visudo /private/etc/sudoers.d/vagrant-nfs
+sudo visudo -f /private/etc/sudoers.d/vagrant-nfs
 ```
 
 ```bash:/private/etc/sudoers.d/vagrant-nfs

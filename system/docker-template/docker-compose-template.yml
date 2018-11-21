@@ -53,6 +53,7 @@ services:
     env_file: .env
     volumes:
       # - ../wp_themes:/var/www/html/wp-content/themes
+      - ./my-wordpress/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
       - ../development/wp_themes/:/var/www/html/wp-content/themes/understrap-child-master
       - ../libs/wp_themes/understrap-master:/var/www/html/wp-content/themes/understrap-master
 

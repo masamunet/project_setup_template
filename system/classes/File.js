@@ -9,7 +9,7 @@ class File{
 
   setup(projectName)
   {
-    fs.copyFile('system/commands/com.js', `${projectName}/com.js`, (err)=>{
+    fs.copyFile('system/commands/com.js', `../${projectName}/com.js`, (err)=>{
       if(err){
         throw err;
         return this;

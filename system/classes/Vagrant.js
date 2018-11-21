@@ -13,13 +13,28 @@ class Vagrant{
   {
     const vagrantProjectDirName = `${projectName}_vagrant`;
     // ディレクトリの存在チェック
-    fs.exists(`${projectName}/${vagrantProjectDirName}`, (exists)=>{
+    // 最初は設定ファイル用ディレクトリのチェックから
+    fs.exists(`../${projectName}/${vagrantProjectDirName}_config`, (exists)=>{
+      if(exists){
+        // 存在していれば終了。
+        return false;
+      }else{
+        fs.mkdir(`../${projectName}/${vagrantProjectDirName}_config`, (err)=>{
+          if(err){
+            throw err;
+            return this;
+          }
+        });
+      }
+    });
+    // 本ディレクトリ
+    fs.exists(`../${projectName}/${vagrantProjectDirName}`, (exists)=>{
       if(exists){
         // 存在していれば終了。
         return false;
       }else{
         // 存在していなければ処理を継続
-        const command = `git clone https://github.com/coreos/coreos-vagrant.git ${projectName}/${vagrantProjectDirName}`;
+        const command = `git clone https://github.com/coreos/coreos-vagrant.git ../${projectName}/${vagrantProjectDirName}`;
         exec(command, (err, stdout, stderr) => {
           if (err) {
             console.log(err);
@@ -54,13 +69,13 @@ class Vagrant{
         throw err;
         return this;
       }
-      if(++check === 2){
+      if(++check === 3){
         console.log('Vagrant generateConfig complete!');
         this.onComplete();
       }
     };
     const writeConfigFile = (data) => {
-      fs.writeFile(`${projectName}/${projectName}_vagrant/config.rb`, data, callback);
+      fs.writeFile(`../${projectName}/${projectName}_vagrant_config/config.rb`, data, callback);
     };
     const readConfigFile = ()=>{
       fs.readFile('system/vagrant-template/config-template.rb', 'utf8', (err, data) => {
@@ -77,13 +92,21 @@ class Vagrant{
     let configFileData;
     this.readAndReplace(
       'system/vagrant-template/config-template.ign',
-      `${projectName}/${projectName}_vagrant/config.ign`,
+      `../${projectName}/${projectName}_vagrant_config/config.ign`,
       [
         [/\${COMPOSE_VERSION}/g, version]
       ],
       callback
     );
-    fs.readFile(`${projectName}/${projectName}_vagrant/config.rb.sample`, 'utf8', (err, data) => {
+    this.readAndReplace(
+      'system/vagrant-template/cloud-config-template.yml',
+      `../${projectName}/${projectName}_vagrant_config/cloud-config.yml`,
+      [
+        [/\${COMPOSE_VERSION}/g, version]
+      ],
+      callback
+    );
+    fs.readFile(`../${projectName}/${projectName}_vagrant/config.rb.sample`, 'utf8', (err, data) => {
       if(err){
         console.log(err);
         throw err;

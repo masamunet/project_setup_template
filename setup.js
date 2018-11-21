@@ -2,7 +2,7 @@ const projectName = (process.argv[2])? process.argv[2] : 'myProject';
 const isClone = (process.argv[3])? process.argv[3]: false;
 
 const mkDir = [
-  {name: projectName, children: [
+  {name: `../${projectName}`, children: [
     'development::777',
     'documents',
     { name: `${projectName}_docker`, children: [

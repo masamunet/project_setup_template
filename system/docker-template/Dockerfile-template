@@ -4,6 +4,25 @@ FROM wordpress:latest
 RUN apt-get update
 RUN apt-get -y install wget unzip
 
+#
+RUN apt-get update \
+  && apt-get install -y \
+    gcc \
+    make \
+    libpng-dev \
+    git \
+    unzip \
+    vim \
+    libmcrypt-dev \
+    mysql-client \
+    curl \
+    gnupg \
+    libjpeg-dev \
+    libfreetype6-dev \
+    && docker-php-ext-install pdo_mysql mysqli mbstring zip \
+    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
+    && docker-php-ext-install -j$(nproc) gd
+
 # WP プラグイン (zip) ダウンロード
 WORKDIR /tmp/wp-plugins
 RUN wget https://downloads.wordpress.org/plugin/contact-form-7.4.6.zip
@@ -12,6 +31,9 @@ RUN wget https://downloads.wordpress.org/plugin/wp-emmet.zip
 RUN wget https://downloads.wordpress.org/plugin/taxonomy-terms-order.1.5.4.zip
 RUN wget https://downloads.wordpress.org/plugin/all-in-one-wp-migration.6.70.zip
 RUN wget https://downloads.wordpress.org/plugin/wp-file-manager.zip
+RUN wget https://downloads.wordpress.org/plugin/taxonomy-terms-order.1.5.5.zip
+RUN wget https://downloads.wordpress.org/plugin/public-post-preview.2.7.0.zip
+RUN wget https://downloads.wordpress.org/plugin/safe-svg.1.8.0.zip
 
 # Zip ファイルを解凍してインストール
 RUN unzip './*.zip' -d /usr/src/wordpress/wp-content/plugins

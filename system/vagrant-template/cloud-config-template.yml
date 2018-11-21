@@ -14,8 +14,8 @@ storage:
           export TZ=JST-9
           alias dc="docker-compose"
           alias dcup="docker-compose up -d"
-          alias dcrun="docker-compose run"
-          alias dcexec="docker-compose exec --rm"
+          alias dcrun="docker-compose run --rm"
+          alias dcexec="docker-compose exec"
           cd /home/core/docker
     -
       filesystem: root

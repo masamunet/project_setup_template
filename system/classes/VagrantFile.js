@@ -31,11 +31,14 @@ class VagrantFile{
       this.onComplete();
     };
     this.readAndReplace(
-      `${projectName}/${projectName}_vagrant/VagrantFile`,
-      `${projectName}/${projectName}_vagrant/VagrantFile`,
+      `../${projectName}/${projectName}_vagrant/VagrantFile`,
+      `../${projectName}/${projectName}_vagrant/VagrantFile`,
       [
         [keyword, keyword + '\n' + add_str],
-        [installPluginStr, installPluginAdd]
+        [installPluginStr, installPluginAdd],
+        ['File.dirname(__FILE__), "config.rb"', `File.dirname(Dir.pwd), "${projectName}_vagrant_config/config.rb"`],
+        ['File.dirname(__FILE__), "config.ign"', `File.dirname(Dir.pwd), "${projectName}_vagrant_config/config.ign"`],
+        ["'config.ign'", `'../${projectName}_vagrant_config/config.ign'`]
       ],
       callback
     );
