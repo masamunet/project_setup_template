@@ -23,18 +23,18 @@ class Docker{
       }
     };
     fs.copyFile(
-      'system/docker-template/docker-compose-templates.yml',
+      'system/docker-template/docker-compose-template.yml',
       `../${projectName}/${projectName}_docker/docker-compose.yml`,
       callback
     );
     fs.copyFile(
-      'system/docker-template/Dockerfile-template',
-      `../${projectName}/${projectName}_docker/my-wordpress/Dockerfile`,
+      'system/docker-template/wp/Dockerfile-template',
+      `../${projectName}/${projectName}_docker/wp/Dockerfile`,
       callback
     );
     fs.copyFile(
-      'system/docker-template/uploads-template.ini',
-      `../${projectName}/${projectName}_docker/my-wordpress/uploads.ini`,
+      'system/docker-template/wp/uploads-template.ini',
+      `../${projectName}/${projectName}_docker/wp/uploads.ini`,
       callback
     );
     fs.readFile('system/docker-template/.env.template', 'utf8', (err, data) =>{

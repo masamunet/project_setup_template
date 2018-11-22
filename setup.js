@@ -6,7 +6,7 @@ const mkDir = [
     'development::777',
     'documents',
     { name: `${projectName}_docker`, children: [
-      'my-wordpress',
+      'wp',
     ]},
     { name: 'libs', children: [
       'wp_themes::777',
