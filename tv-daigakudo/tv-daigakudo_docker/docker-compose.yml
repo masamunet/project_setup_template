@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  rtmp:
+    image: jasonrivers/nginx-rtmp
+    restart: always
+    ports:
+      - '8002:8080'
+      - '1935:1935'
+    emvironment:
+      - RTMP_STREAM_NAMES=live
+    volumes:
+      - ../development/conf/:/opt/nginx/conf/
+      - ../development/html/:/var/www/html/
